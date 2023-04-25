@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('projetos', function (Blueprint $table) {
             $table->string('name')->primary();
             $table->string('horas_gastas');
-            $table->float('valor_hora', 10, 2)->nullable(false);
             $table->string('status')->nullable(false)->default('aberto');
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->timestamps();
