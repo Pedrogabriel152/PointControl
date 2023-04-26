@@ -53,6 +53,12 @@ class ProjetoRepository {
         });
     }
 
+    public static function statusProject(object $project){
+        $project->status = $project->status == "Fechado"? "Aberto" : "Fechado";
+
+        $project->save();
+    }
+
     public static function getClockInOpen(object $user){
         return DB::transaction(function () use($user) {
             $projectsOpen = Projeto::where([
@@ -92,5 +98,12 @@ class ProjetoRepository {
 
     public static function delete(object $project) {
         $project->delete();
+    }
+
+    public static function update(object $project, Request $request) {
+        $project->name = $request->name;
+        $project->status = $request->status;
+
+        $project->save();
     }
 } 

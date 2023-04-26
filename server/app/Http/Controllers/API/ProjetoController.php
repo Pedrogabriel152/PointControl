@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class ProjetoController extends Controller
 {
+    // Cria um novo projeto
     public function create(Request $request) {
         // Validations
 
@@ -35,6 +36,48 @@ class ProjetoController extends Controller
 
     }
 
+    // Recupera dados de um proketo em expecifico
+    public function edit(Request $request, int $id){
+        $user = $request->user();
+        $project = ProjetoRepository::getProjectById($id, $user->id);
+
+        if(!$project) {
+            return response()->json(['message' => 'Projeto não encontrado'], 404);
+        }
+
+        return response()->json($project, 200);
+    }
+
+    // Atualiza o projeto
+    public function update(int $id, Request $request) {
+        $user = $request->user();
+        $project = ProjetoRepository::getProjectById($id, $user->id);
+
+        // Validations
+
+        if(!$request->name) {
+            return response()->json(['message' => 'O campo nome não pode estar vazio'], 402);
+        }
+
+        if(!$request->status) {
+            return response()->json(['message' => 'O status é obrigatorio']);
+        }
+
+        if(!$project) {
+            return response()->json(['message' => 'Projeto não encontrado'], 404);
+        }
+
+        try {
+            ProjetoRepository::update($project, $request);
+
+            return response()->json(['message' => 'Projeto atualizado com sucesso'], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Erro ao atualizar projeto'], 500);
+        }
+
+    }
+
+    // Altera as horas gastas no projeto
     public function clockIn(Request $request, int $id){
         $project = ProjetoRepository::updateClockIn($request->acao, $id, $request);
 
@@ -45,6 +88,26 @@ class ProjetoController extends Controller
         return response()->json(['message' => "Projeto $project->name atualizado com sucesso"], 200);
     }
 
+    // Atualiza o status do projeto 
+    public function statusProject(Request $request, int $id) {
+        $user = $request->user();
+        
+        try {
+            $project = ProjetoRepository::getProjectById($id, $user->id);
+
+            if(!$project) {
+                return response()->json(['message' => 'Projeto não encontrado'], 404);
+            }
+
+            ProjetoRepository::statusProject($project);
+
+            return response()->json(['message' => 'Status atualizado com sucesso'], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Erro ao atualizar o status do projeto'], 500);
+        }
+    }
+
+    // Recupera todos os projetos 
     public function getAll(Request $request) {
         $user = $request->user();
         $projects = ProjetoRepository::getAllProjects($user->id);
@@ -52,6 +115,7 @@ class ProjetoController extends Controller
         return response()->json($projects, 200);
     }
 
+    // Recupera todos os projetos Fechados
     public function getAllClose(Request $request) {
         $user = $request->user();
         $projects = ProjetoRepository::getAllProjectsClose($user->id);
@@ -59,6 +123,7 @@ class ProjetoController extends Controller
         return response()->json($projects);
     }
 
+    // Recupera todos os projetos Abertos
     public function getAllOpen(Request $request) {
         $user = $request->user();
         $projects = ProjetoRepository::getAllProjectsClose($user->id);
@@ -66,6 +131,7 @@ class ProjetoController extends Controller
         return response()->json($projects);
     }
 
+    // Deletar Projetos
     public function delete(int $id, Request $request){
         try {
             $user = $request->user();

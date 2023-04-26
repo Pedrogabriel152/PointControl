@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class UserControllerr extends Controller
 {
+
+    // Criando um usuário
     public function create(Request $request) {
         // Validations
 
@@ -57,6 +59,7 @@ class UserControllerr extends Controller
         }
     }
 
+    // Fazendo login de um um usuário
     public function login(Request $request) {
 
         if(!$request->email) {
@@ -84,5 +87,67 @@ class UserControllerr extends Controller
         $token = $userExist->createToken('Token',["*" => 72000], $dataExpiration);
 
         return response()->json(['token' => $token->plainTextToken], 200);
+    }
+
+    // Buscando informações de um usuário
+    public function edit(Request $request) {
+        $user = $request->user();
+        return response()->json($user, 200);
+    }
+
+    // Update do Usuário
+    public function update(Request $request) {
+        $user = $request->user();
+        // Validations
+
+        if(!$request->name) {
+            return response()->json(['message' => 'O campo nome não pode estar vazio'], 402);
+        }
+        $user->name = $request->name;
+
+        if(!$request->email) {
+            return response()->json(['message' => 'O campo email não pode estar vazio'], 402);
+        }
+        $user->email = $request->email;
+
+        if(!$request->valor_hora) {
+            return response()->json(['message' => 'O campo de valor ho0ra não pode estar vazio'], 402);
+        }
+        $user->valor_hora = floatval($request->valor_hora);
+
+        if($request->password){
+            if(!$request->password) {
+                return response()->json(['message' => 'O campo senha não pode estar vazio'], 402);
+            }
+    
+            if(!$request->confirmpassword) {
+                return response()->json(['message' => 'O campo de confrimação da senha não pode estar vazio'], 402);
+            }
+    
+            if($request->confirmpassword !== $request->password) {
+                return response()->json(['message' => 'As senhas precisam ser identicas'], 402);
+            }
+
+            $hash = password_hash($request->password, PASSWORD_BCRYPT);
+            $user->password = $hash;
+        }
+
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+
+            $image = $request->image;
+
+            $extension = $image->extension();
+
+            $imageName = md5($image->image->getClientOriginalName() . strtotime("now")).".".$extension;
+
+            $image->image->move(public_path("img/users/$request->name"), $imageName);
+
+            $user->image = $imageName;
+        }
+    }
+
+    // Realizando o logout do usuário
+    public function logout(Request $request) {
+        $request->user()->currentAccessToken()->delete();
     }
 }

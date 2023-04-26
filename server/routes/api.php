@@ -18,12 +18,33 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(ProjetoController::class)->group(function() {
-        Route::post('/new', 'create');
-        Route::patch('/clockin/{id}', 'clockIn');
-        Route::get('/projects', 'getAll');
-        Route::get('/projects/close', 'getAllClose');
-        Route::get('/projects/open', 'getAllOpen');
-        Route::delete('/projects/delete/{id}', 'delete');
+        Route::prefix('projects')->group(function() {
+            // Create
+            Route::post('new', 'create');
+            
+            // Get infos
+            Route::get('/', 'getAll');
+            Route::get('close', 'getAllClose');
+            Route::get('open', 'getAllOpen');
+            Route::get('edit/{id}', 'edit');
+
+            // Delete
+            Route::delete('delete/{id}', 'delete');
+            
+            // Update
+            Route::patch('update/{id}', 'update');
+            Route::patch('update/status/{id}', 'statusProject');
+            Route::patch('clockin/{id}', 'clockIn');
+        });
+    });
+
+    Route::controller(UserControllerr::class)->group(function() {
+        Route::prefix('users')->group(function() {
+            Route::get('edit', 'edit');
+            
+        });
+
+        Route::delete('logout', 'logout');
     });
 });
 
