@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\UserRepository;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 
 class UserControllerr extends Controller
@@ -44,7 +45,10 @@ class UserControllerr extends Controller
                 return response()->json(['message' => 'Erro ao criar usuário, tente novamente'], 500);
             }
 
-            $token = $newUser->createToken('Token',['expiration' => 72000]);
+            $dataFutura = strtotime("2 hours");
+            $dataExpiration = new DateTime(date('Y-m-d H:i',$dataFutura));
+
+            $token = $newUser->createToken('Token',["*"], $dataExpiration);
 
             return response()->json(['token' => $token->plainTextToken], 200);
 
@@ -74,7 +78,10 @@ class UserControllerr extends Controller
             return response()->json(['message' => "Usuário ou senha incorretos"], 404);
         }
 
-        $token = $userExist->createToken('Token',['expiration' => 72000]);
+        $dataFutura = strtotime("2 hours");
+        $dataExpiration = new DateTime(date('Y-m-d H:i',$dataFutura));
+
+        $token = $userExist->createToken('Token',["*" => 72000], $dataExpiration);
 
         return response()->json(['token' => $token->plainTextToken], 200);
     }

@@ -5,9 +5,10 @@ namespace App\Http\Repositories;
 date_default_timezone_set('America/Sao_Paulo');
 
 use App\Models\Projeto;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Services\ProjectoServices;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class ProjetoRepository {
 
@@ -30,6 +31,7 @@ class ProjetoRepository {
         $user = $request->user();
 
         return DB::transaction(function () use($acao, $date, $id, $user) {
+            $valorHora = floatval($user->valor_hora);
             $project = Projeto::whereId($id)->first();
             $projectOpen = ProjetoRepository::getClockInOpen($user);
 
@@ -38,23 +40,7 @@ class ProjetoRepository {
             }
 
             if($projectOpen){
-                $projectOpen->status = "Aberto";
-                $inicio = new DateTime($projectOpen->inicio);
-                $fim = new DateTime(date('Y-m-d H:i'));
-                $diff = $inicio->diff($fim);
-
-                $horasGastasAtual = explode(':', $projectOpen->horas_gastas);
-                $horasGastasPonto = [$diff->h, $diff->i];
-                $horasTotal = [
-                    intval($horasGastasAtual[0]) + $horasGastasPonto[0],
-                    intval($horasGastasAtual[1]) + $horasGastasPonto[1]
-                ];
-
-                $dataDiefenca = "$horasTotal[0]:$horasTotal[1]";
-
-
-                $projectOpen->horas_gastas = $dataDiefenca;
-                $projectOpen->inicio = '';
+                $projectOpen = ProjectoServices::calcularTotal($projectOpen, $valorHora);
                 $projectOpen->save();
             }
 
@@ -69,16 +55,42 @@ class ProjetoRepository {
 
     public static function getClockInOpen(object $user){
         return DB::transaction(function () use($user) {
-            $projectsOpen = Projeto::whereStatus('Iniciado')->get();
-            $projectOpen = '';
+            $projectsOpen = Projeto::where([
+                ['status', '=', 'Iniciado'],
+                ['id_user', '=', $user->id]
+            ])->first();
 
-            foreach ($projectsOpen as $key => $value) {
-                if($user->id == $value->id_user) {
-                    $projectOpen = $value;
-                }
-            }
-            
-            return $projectOpen;
+            return $projectsOpen;
         });
+    }
+
+    public static function getAllProjects(int $id_user){
+        $projects = Projeto::where([
+            ['id_user', '=', $id_user]
+        ])->get();
+
+        return $projects;
+    }
+
+    public static function getAllProjectsClose(int $id_user){
+        $projects = Projeto::where([
+            ['id_user', '=', $id_user],
+            ['status', '=', 'Terminado']
+        ])->get();
+
+        return $projects;
+    }
+
+    public static function getProjectById(int $id_projeto, int $id_user) {
+        $project = Projeto::where([
+            ['id', '=', $id_projeto],
+            ['id_user', '=', $id_user]
+        ])->first();
+
+        return $project;
+    }
+
+    public static function delete(object $project) {
+        $project->delete();
     }
 } 

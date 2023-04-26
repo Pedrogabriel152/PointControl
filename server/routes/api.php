@@ -20,6 +20,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(ProjetoController::class)->group(function() {
         Route::post('/new', 'create');
         Route::patch('/clockin/{id}', 'clockIn');
+        Route::get('/projects', 'getAll');
+        Route::get('/projects/close', 'getAllClose');
+        Route::get('/projects/open', 'getAllOpen');
+        Route::delete('/projects/delete/{id}', 'delete');
     });
 });
 
