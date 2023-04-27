@@ -73,7 +73,7 @@ class ProjetoRepository {
     public static function getAllProjects(int $id_user){
         $projects = Projeto::where([
             ['id_user', '=', $id_user]
-        ])->get();
+        ])->orderBy('created_at', 'desc')->get();
 
         return $projects;
     }
@@ -82,7 +82,7 @@ class ProjetoRepository {
         $projects = Projeto::where([
             ['id_user', '=', $id_user],
             ['status', '=', 'Terminado']
-        ])->get();
+        ])->orderBy('created_at', 'desc')->get();
 
         return $projects;
     }
@@ -105,5 +105,40 @@ class ProjetoRepository {
         $project->status = $request->status;
 
         $project->save();
+    }
+
+    public static function getRecents(int $id){
+        $projects = DB::select("SELECT name, id, created_at FROM projetos WHERE id_user = $id ORDER BY created_at DESC LIMIT 5");
+
+        return $projects;
+    }
+
+    public static function sumHours(int $id){
+        $time = DB::select("SELECT horas_gastas FROM projetos WHERE id_user = $id");
+
+        $hours = ProjectoServices::sumHours($time);
+        $media = ProjectoServices::mediaHours($time);
+
+        $data = [
+            $hours,
+            $media,
+            sizeof($time)
+        ];
+
+        return $data;
+    }
+
+    public static function getHoursProjects(int $id){
+        $projects = DB::select("SELECT name, id, horas_gastas FROM projetos WHERE id_user = $id LIMIT 5");
+
+        $projectsOrden = ProjectoServices::ordenaProjectsHours($projects);
+
+        return $projectsOrden;
+    }
+
+    public static function getProjectsPrice(int $id) {
+        $projects = DB::select("SELECT name, id, custo FROM projetos WHERE id_user = $id ORDER BY custo DESC LIMIT 5");
+
+        return $projects;
     }
 } 

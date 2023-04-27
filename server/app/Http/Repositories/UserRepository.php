@@ -28,4 +28,14 @@ class UserRepository
 
         return $userExist;
     }
+
+    public static function update(object $user, object $userExist): void {
+        $userExist->name = $user->name;
+        $userExist->email = $user->email;
+        $userExist->image = $user->image;
+        $userExist->valor_hora = $user->valor_hora;
+        $userExist->password = $user->password;
+
+        $userExist->save();        
+    }
 }

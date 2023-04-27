@@ -149,4 +149,55 @@ class ProjetoController extends Controller
             return response()->json(['message' => 'Erro ao excluir projeto'], 500);
         }
     }
+
+    // Buscar os 5 mais recentes
+    public function getRecent(Request $request){
+        $user = $request->user();
+
+        $projects = ProjetoRepository::getRecents($user->id );
+
+        if(!$projects) {
+            return response()->json(['message' => 'Algo deu errado tente novamente'], 500);
+        }
+
+        return response()->json($projects, 200);
+    }
+
+    // Buscar a quantidade de horas projetos
+    public function getHours(Request $request) {
+        $user = $request->user();
+
+        $data = ProjetoRepository::sumHours($user->id);
+
+        if(!$data[0]){
+            return response()->json([
+                'horas' => 0,
+                'media' => 0,
+                'total' => 0
+            ], 200);
+        }
+
+        $projects = ProjetoRepository::getHoursProjects($user->id);
+
+        return response()->json([
+            'horas' => $data[0],
+            'media' => $data[1],
+            'total' => $data[2],
+            'projects' => $projects
+        ], 200);
+    }
+
+    // Buscar projetos com o custo
+    public function getPriceProject(Request $request) {
+        $user = $request->user();
+
+        $projects = ProjetoRepository::getProjectsPrice($user->id);
+
+        if(!$projects) {
+            return response()->json(['message' => 'Algo deu errado tente novamente'], 500);
+        }
+
+        return response()->json($projects,200);
+    }
+
 }

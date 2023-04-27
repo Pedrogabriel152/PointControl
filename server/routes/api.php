@@ -27,6 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('close', 'getAllClose');
             Route::get('open', 'getAllOpen');
             Route::get('edit/{id}', 'edit');
+            Route::get('recent', 'getRecent');
+            Route::get('hours', 'getHours');
+            Route::get('price', 'getPriceProject');
 
             // Delete
             Route::delete('delete/{id}', 'delete');
@@ -41,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(UserControllerr::class)->group(function() {
         Route::prefix('users')->group(function() {
             Route::get('edit', 'edit');
-            
+            Route::post('update', 'update');
         });
 
         Route::delete('logout', 'logout');

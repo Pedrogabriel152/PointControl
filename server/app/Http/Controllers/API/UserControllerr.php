@@ -52,7 +52,10 @@ class UserControllerr extends Controller
 
             $token = $newUser->createToken('Token',["*"], $dataExpiration);
 
-            return response()->json(['token' => $token->plainTextToken], 200);
+            return response()->json([
+                'token' => $token->plainTextToken,
+                'user_id' => $newUser->id
+            ], 200);
 
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Erro ao criar usuário, tente novamente'], 500);
@@ -86,19 +89,30 @@ class UserControllerr extends Controller
 
         $token = $userExist->createToken('Token',["*" => 72000], $dataExpiration);
 
-        return response()->json(['token' => $token->plainTextToken], 200);
+        return response()->json([
+            'token' => $token->plainTextToken,
+            'user_id' => $userExist->id
+        ], 200);
     }
 
     // Buscando informações de um usuário
     public function edit(Request $request) {
         $user = $request->user();
-        return response()->json($user, 200);
+
+        $userExist = UserRepository::verifyUserExist($user->email);
+        return response()->json($userExist, 200);
     }
 
     // Update do Usuário
     public function update(Request $request) {
         $user = $request->user();
         // Validations
+
+        $userExist = UserRepository::verifyUserExist($user->email);
+
+        if(!$userExist){
+            return response()->json(['message' => 'Usuário não encontrado'], 404);
+        }
 
         if(!$request->name) {
             return response()->json(['message' => 'O campo nome não pode estar vazio'], 402);
@@ -108,7 +122,6 @@ class UserControllerr extends Controller
         if(!$request->email) {
             return response()->json(['message' => 'O campo email não pode estar vazio'], 402);
         }
-        $user->email = $request->email;
 
         if(!$request->valor_hora) {
             return response()->json(['message' => 'O campo de valor ho0ra não pode estar vazio'], 402);
@@ -138,11 +151,20 @@ class UserControllerr extends Controller
 
             $extension = $image->extension();
 
-            $imageName = md5($image->image->getClientOriginalName() . strtotime("now")).".".$extension;
+            $imageName = md5($image->getClientOriginalName() . strtotime("now")).".".$extension;
 
-            $image->image->move(public_path("img/users/$request->name"), $imageName);
+            $image->move(public_path("img/users/$user->id"), $imageName);
 
             $user->image = $imageName;
+        }
+
+        try {
+            UserRepository::update($user, $userExist);
+
+            return response()->json(['message' => 'Usuário atualizado com sucesso'], 200);
+            
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Erro ao atualizar, tente novamente'], 500);
         }
     }
 

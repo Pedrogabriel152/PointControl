@@ -50,4 +50,84 @@ class ProjectoServices
 
         return $project;
     }
+
+    public static function sumHours(array $time) {
+
+        $minuts = 0;
+        $hours = 0;
+
+        foreach ($time as $key => $value) {
+
+            if($value->horas_gastas){
+                $hoursArray = explode(':', $value->horas_gastas);
+                $minuts += intval($hoursArray[1]);
+                $hours += intval($hoursArray[0]);
+            }
+            
+        }
+
+        if($minuts == 60) {
+            $minuts = 0;
+            $hours += 1;
+        }
+
+        return $hours;
+    }
+
+    public static function mediaHours(array $time) {
+        $minuts = 0;
+        $hours = 0;
+
+        foreach ($time as $key => $value) {
+            if($value->horas_gastas){
+                $hoursArray = explode(':', $value->horas_gastas);
+                $minuts += intval($hoursArray[1]);
+                $hours += intval($hoursArray[0]);
+            }
+        }
+
+        if($minuts == 60) {
+            $minuts = 0;
+            $hours += 1;
+        }
+
+        $media = $hours/sizeof($time);
+
+        return $media;  
+    }
+
+    public static function ordenaProjectsHours(array $projects) {
+        foreach ($projects as $key => $value) {
+
+            if(!$value->horas_gastas){
+                $projects[$key]->horas_gastas = 0;
+                continue;
+            }
+            $hoursArray = explode(':', $value->horas_gastas);
+            $minuts = intval($hoursArray[1]);
+            $hours = intval($hoursArray[0]);
+
+            if($minuts == 60) {
+                $minuts = 0;
+                $hours += 1;
+            }
+
+            $minutsDecimal = $minuts/60;
+
+            $projects[$key]->horas_gastas = $hours + $minutsDecimal;
+        }
+
+        for ($i=0; $i < sizeof($projects)-1; $i++) { 
+            for ($j=1; $j < sizeof($projects); $j++) { 
+                if($projects[$i]->horas_gastas < $projects[$j]->horas_gastas){
+
+                    $aux = $projects[$i];
+                    $projects[$i] = $projects[$j];
+                    $projects[$j] = $aux;
+                }
+            }
+        }
+
+        return $projects;  
+    }
 }
