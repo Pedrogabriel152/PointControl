@@ -55,6 +55,17 @@
     color: #FFF;
 }
 
+.mensagem {
+    color: red;
+    font-size: .66em;
+    width: 97%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+    margin-top: 0;
+}
+
 
 .linha {
     border-right: 2px solid #000;

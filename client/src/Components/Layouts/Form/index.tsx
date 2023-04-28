@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 
 // Icons
 import { RxAvatar } from 'react-icons/rx';
@@ -6,11 +6,13 @@ import { RxAvatar } from 'react-icons/rx';
 interface Form {
     inputs: any
     submit: string
+    handleSubmit(e: ChangeEvent<HTMLFormElement>): void
+    mensagem: string
 }
 
-const Form = ({inputs, submit}: Form) => {
+const Form = ({inputs, submit, handleSubmit, mensagem}: Form) => {
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <label className="avatar">
                 <RxAvatar size={90} color="#000"/>
             </label>
@@ -27,6 +29,10 @@ const Form = ({inputs, submit}: Form) => {
                     />
                 </div>
             ))}
+
+            {mensagem && (
+                <div className="mensagem">* {mensagem}</div>
+            )}
 
             <input type="submit" value={submit} />
         </form>
