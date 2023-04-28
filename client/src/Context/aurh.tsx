@@ -7,12 +7,12 @@ import { api } from "../utils/api";
 export const AuthContext = createContext({});
 
 const AuthProvider = ({children}: any) => {
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<any>({});
     const [loading, setLoading] = useState<boolean>(true);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storageUser = localStorage.getItem('@ticketsPRO');
+        const storageUser = localStorage.getItem('@user');
 
         if(!storageUser){
             setLoading(false);
@@ -28,7 +28,6 @@ const AuthProvider = ({children}: any) => {
     }
 
     const logout = async () => {
-        localStorage.removeItem('@token');
         localStorage.removeItem('@user');
         setUser(null);
         navigate('/');
@@ -38,10 +37,7 @@ const AuthProvider = ({children}: any) => {
         <AuthContext.Provider 
             value={{ 
                 user,
-                loading,
-                logout,
-                storageUser,
-                setUser
+                loading
             }}
         >
             {children}

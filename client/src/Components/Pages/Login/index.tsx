@@ -44,8 +44,7 @@ const Login = () => {
                 password: user.password
             })
             .then((res: any) => {
-                localStorage.setItem('token', JSON.stringify(res.data.token));
-                localStorage.setItem('user', res.data.user_id);
+                localStorage.setItem('@user', JSON.stringify(res.data));
                 navigate('/home');
             })
             .catch((error: any) => {

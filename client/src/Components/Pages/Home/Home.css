@@ -1,0 +1,63 @@
+main{
+    height: 70vh;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1em;
+}
+
+.recents{
+    width: 40vw;
+    background-color: #F8F8F8;
+    text-align: center;
+    height: 31vh;
+}
+
+.recents h3 {
+    padding-top: .2em;
+}
+
+table {
+    border: 1px solid #CCC;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+table caption {
+    font-size: 1em;
+    margin: .5em .75em;
+}
+
+table tr{
+    border: 1px solid #DDD;
+    padding: .35em;
+}
+
+table th, table td {
+    padding: .62em;
+    text-align: center;
+}
+
+table th {
+    font-size: .85em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.totalhours{
+    width: 28.5vw;
+    background-color: #F8F8F8;
+    text-align: center;
+    height: 31vh;
+    margin-left: 1em;
+}
+
+.mediahours{
+    width: 28.5vw;
+    background-color: #F8F8F8;
+    text-align: center;
+    height: 31vh;
+    margin-left: 1em;
+}
