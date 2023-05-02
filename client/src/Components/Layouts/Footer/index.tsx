@@ -19,7 +19,7 @@ const Footer = () => {
                     />
                 </a>
 
-                <a href="https://github.com/Pedrogabriel152">
+                <a href="https://www.linkedin.com/in/pedro-gabriel-a38726223/">
                     <BsLinkedin 
                         size={25}
                         color="#000"

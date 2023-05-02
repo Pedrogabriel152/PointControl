@@ -26,8 +26,7 @@ class ProjectoServices
         $inicio = new DateTime($project->inicio);
         $fim = new DateTime(date('Y-m-d H:i'));
         $diff = $inicio->diff($fim);
-        dd($diff);
-
+        
         $horasGastasAtual = explode(':', $project->horas_gastas);
         $horasGastasPonto = [$diff->h, $diff->i];
         if(sizeof($horasGastasAtual) == 2){

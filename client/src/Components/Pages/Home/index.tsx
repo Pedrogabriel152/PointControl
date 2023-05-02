@@ -157,7 +157,7 @@ const Home = () => {
                 <div className="totalhours">
                     <h3>Médias de Horas Trabalhadas</h3>
 
-                    <h1>{parseInt(projectsHours.media).toString()}</h1>
+                    <h1>{projectsHours.media? parseInt(projectsHours.media).toString(): 0}</h1>
 
                 </div>
 

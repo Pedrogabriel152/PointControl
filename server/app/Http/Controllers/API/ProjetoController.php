@@ -126,7 +126,7 @@ class ProjetoController extends Controller
     // Recupera todos os projetos Abertos
     public function getAllOpen(Request $request) {
         $user = $request->user();
-        $projects = ProjetoRepository::getAllProjectsClose($user->id);
+        $projects = ProjetoRepository::getAllProjectsOpen($user->id);
 
         return response()->json($projects);
     }

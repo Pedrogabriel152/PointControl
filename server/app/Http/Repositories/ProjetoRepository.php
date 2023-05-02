@@ -73,7 +73,7 @@ class ProjetoRepository {
     public static function getAllProjects(int $id_user){
         $projects = Projeto::where([
             ['id_user', '=', $id_user]
-        ])->orderBy('created_at', 'desc')->get();
+        ])->orderBy('created_at', 'desc')->paginate(10);
 
         return $projects;
     }
@@ -82,10 +82,20 @@ class ProjetoRepository {
         $projects = Projeto::where([
             ['id_user', '=', $id_user],
             ['status', '=', 'Terminado']
-        ])->orderBy('created_at', 'desc')->get();
+        ])->orderBy('created_at', 'desc')->paginate(10);
 
         return $projects;
     }
+
+    public static function getAllProjectsOpen(int $id_user){
+        $projects = Projeto::where([
+            ['id_user', '=', $id_user],
+            ['status', '=', 'Aberto']
+        ])->orderBy('created_at', 'desc')->paginate(10);
+
+        return $projects;
+    }
+
 
     public static function getProjectById(int $id_projeto, int $id_user) {
         $project = Projeto::where([
