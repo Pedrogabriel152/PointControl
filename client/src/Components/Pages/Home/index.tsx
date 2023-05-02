@@ -22,27 +22,31 @@ import ReactApexChart from "react-apexcharts";
 const Home = () => {
     const [projectsRecents, setPorjectsRecents] = useState<any>([]);
     const [projectsHours, setProjectsHours] = useState<any>({});
+    const [projectsPrice, setProjectsPrice] = useState<any>([]);
     const { user, loading }: any = useContext(AuthContext);
+    const [series, setSeries] = useState<any>([]);
+    const [labels, setLabels] = useState<any>([]);
     const navigate = useNavigate();
 
     const options: any = {
         chart: {
-            chart: {
-              height: 350,
-              type: 'radialBar',
-            },
-            plotOptions: {
-              radialBar: {
-                hollow: {
-                  size: '70%',
+            width: 350,
+            type: 'donut'
+        },
+        labels,
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'right',
+                    offsetY: 0,
                 }
-              },
-            },
-            labels: ['Cricket'],
-          },
-      }
-
-    const series: any = [70]
+            }
+        }]
+    }
 
     useEffect(() => {
         api.defaults.headers.Authorization = `Bearer ${user.token}`;
@@ -66,8 +70,17 @@ const Home = () => {
         const getProjectsHours = () => {
             api.get('/api/projects/hours')
             .then(res => {
-                console.log(res.data)
                 setProjectsHours(res.data);
+                options.labels = [];
+                let series:any = [];
+
+                res.data.projects.forEach((project: any) => {
+                    options.labels = [...options.labels, project.name];
+                    series.push(parseInt(project.horas_gastas))
+                });
+
+                setSeries(series);
+                setLabels(options.labels);
             })
             .catch(error => {
                 setProjectsHours([]);
@@ -78,36 +91,15 @@ const Home = () => {
     }, [])
 
     useEffect(() => {
+        api.defaults.headers.Authorization = `Bearer ${user.token}`;
 
-        var options = {
-            chart: {
-                width: 380,
-                type: 'donut'
-            },
-            dataLabels: {
-                enabled: false
-              },
-              responsive: [{
-                breakpoint: 480,
-                options: {
-                  chart: {
-                    width: 200
-                  },
-                  legend: {
-                    show: false
-                  }
-                }
-              }],
-              legend: {
-                position: 'right',
-                offsetY: 0,
-                height: 230,
-              }
-          }
-          
-          var chart = new ApexCharts(document.querySelector("#chart"), options);
-          
-          chart.render();
+        api.get('/api/projects/price')
+        .then(res => {
+            setProjectsPrice(res.data)
+        })
+        .catch(error => {
+            setProjectsPrice([]);
+        })
 
     }, [])
 
@@ -163,17 +155,49 @@ const Home = () => {
                 </div>
 
                 <div className="totalhours">
-                    <h3>Horas Total Trabalhadas</h3>
+                    <h3>Médias de Horas Trabalhadas</h3>
 
-                    <div>
-                    <ReactApexChart 
-                        options={options} 
-                        series={series} 
-                        type="radialBar" width={380} 
-                    />
+                    <h1>{parseInt(projectsHours.media).toString()}</h1>
+
+                </div>
+
+                <div className="rowBottom">
+                    <h3>Horas Por Projeto</h3>
+
+                    <div className="grafico">
+                        <ReactApexChart 
+                            options={options} 
+                            series={series} 
+                            type="donut" width={380} 
+                        />
 
                     </div>
+                </div>
 
+                <div className="rowBottom price">
+                    <h3>Custo Por Projeto</h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Projeto</th>
+                                <th scope="col">Custo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {projectsPrice.map((project: any) => {
+
+                                const name = project.name[0].toUpperCase()+project.name.substr(1);
+
+                                return (
+                                    <tr key={project.id}>
+                                        <td data-label="Projeto">{name}</td>
+                                        <td data-label="Custo">{project.custo}</td>
+                                    </tr>
+                                );
+                            })}     
+                        </tbody>
+                    </table>
                 </div>
             </main>
             <Footer />

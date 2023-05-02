@@ -9,7 +9,7 @@ main{
     width: 40vw;
     background-color: #F8F8F8;
     text-align: center;
-    height: 31vh;
+    height: 31.2vh;
 }
 
 .recents h3 {
@@ -52,6 +52,11 @@ table th {
     text-align: center;
     height: 31vh;
     margin-left: 1em;
+    align-items: center;
+}
+
+.totalhours h1{
+    font-size: 5em;
 }
 
 .mediahours{
@@ -60,4 +65,31 @@ table th {
     text-align: center;
     height: 31vh;
     margin-left: 1em;
+}
+
+.mediahours h1{
+    font-size: 5em;
+}
+
+.rowBottom {
+    width: 45vw;
+    background-color: #F8F8F8;
+    padding-top: 1em;
+    height: 32vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.grafico{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.price{
+    margin-left: 1em;
+    width: 53vw;
 }

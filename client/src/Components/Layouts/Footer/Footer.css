@@ -1,0 +1,12 @@
+footer{
+    background-color: #F8F8F8;
+    height: 19vh;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+footer .links a{
+    margin-left: .5em;
+}

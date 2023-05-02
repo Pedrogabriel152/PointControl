@@ -26,13 +26,22 @@ class ProjectoServices
         $inicio = new DateTime($project->inicio);
         $fim = new DateTime(date('Y-m-d H:i'));
         $diff = $inicio->diff($fim);
+        dd($diff);
 
         $horasGastasAtual = explode(':', $project->horas_gastas);
         $horasGastasPonto = [$diff->h, $diff->i];
-        $horasTotal = [
-            intval($horasGastasAtual[0]) + $horasGastasPonto[0],
-            intval($horasGastasAtual[1]) + $horasGastasPonto[1]
-        ];
+        if(sizeof($horasGastasAtual) == 2){
+            $horasTotal = [
+                intval($horasGastasAtual[0]) + $horasGastasPonto[0],
+                intval($horasGastasAtual[1]) + $horasGastasPonto[1]
+            ];
+        } else {
+            $horasTotal = [
+                intval($horasGastasAtual[0]) + $horasGastasPonto[0],
+                $horasGastasPonto[1]
+            ];
+        }
+        
 
         return $horasTotal;
     }
