@@ -32,6 +32,7 @@ const Open = () => {
     const [modal, setModal] = useState<boolean>(false);
     const [text, setText] = useState<string>('Novo Projeto');
     const [textInput, setTextInput] = useState<string>('Cadastrar');
+    const [projectEdit, setProjectEdit] = useState<any>('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -164,6 +165,7 @@ const Open = () => {
                                                     <Icons 
                                                         clockIn={clockIn} 
                                                         project={project}
+                                                        setProjectEdit={setProjectEdit}
                                                         setModal={setModal}
                                                         setText={setText}
                                                         setTextInput={setTextInput}
@@ -188,6 +190,7 @@ const Open = () => {
                                     setText={setText} 
                                     setModal={setModal}
                                     textInput={textInput}
+                                    projectEdit={projectEdit}   
                                     setTextInput={setTextInput}
                                 />
                             )}

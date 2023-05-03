@@ -23,9 +23,10 @@ interface Props {
     setText(value:string):void
     setModal(value:boolean):void
     setTextInput(value: string):void
+    setProjectEdit(project: any):void
 }
 
-const Icons = ({project, clockIn, setText, setModal, setTextInput}:Props) => {
+const Icons = ({project, clockIn, setText, setModal, setTextInput, setProjectEdit}:Props) => {
     const {user} : any = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -57,6 +58,7 @@ const Icons = ({project, clockIn, setText, setModal, setTextInput}:Props) => {
 
     const modalEdit = () => {
         setTextInput('Salvar');
+        setProjectEdit(project);
         setText('Editar Projeto');
         setModal(true);
     }

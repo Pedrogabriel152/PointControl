@@ -14,7 +14,7 @@ import { api } from "../../../utils/api";
 import { toast } from "react-toastify";
 
 interface Props {
-    project?: any
+    projectEdit: any
     text: string
     setModal(value: boolean):void
     setText(value:string):void
@@ -22,7 +22,7 @@ interface Props {
     setTextInput(value:string):void
 }
 
-const Modal = ({project, text, setText, setModal, textInput, setTextInput}: Props) => {
+const Modal = ({projectEdit, text, setText, setModal, textInput, setTextInput}: Props) => {
     const [name, setName] = useState<string>('');
     const [status, setStatus] = useState<string>('Aberto');
     const {user}: any = useContext(AuthContext);
@@ -60,17 +60,16 @@ const Modal = ({project, text, setText, setModal, textInput, setTextInput}: Prop
             return;
         }
 
-        api.patch(`/api/projects/update/${project.id}`, {
+        api.patch(`/api/projects/update/${projectEdit.id}`, {
             name: name,
             status: status
         })
         .then(res => {
             setModal(false);
-            toast.success('Projeto criado com sucesso')
+            toast.success('Projeto editado com sucesso')
             setText('Novo Projeto');
         })
-        .catch(error => toast.error('Erro ao criar projeto'))
-        setText('Novo Projeto');
+        .catch(error => toast.error(error.response.data.message))
     }
 
 

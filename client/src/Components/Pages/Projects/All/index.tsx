@@ -32,6 +32,7 @@ const All = () => {
     const [modal, setModal] = useState<boolean>(false);
     const [text, setText] = useState<string>('Novo Projeto');
     const [textInput, setTextInput] = useState<string>('Cadastrar');
+    const [projectEdit, setProjectEdit] = useState<any>('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -167,6 +168,7 @@ const All = () => {
                                                         setModal={setModal}
                                                         setText={setText}
                                                         setTextInput={setTextInput}
+                                                        setProjectEdit={setProjectEdit}
                                                     />
                                                 </td>
                                             </tr>
@@ -189,7 +191,8 @@ const All = () => {
                                 setText={setText} 
                                 setModal={setModal} 
                                 textInput={textInput}
-                                setTextInput={setTextInput}    
+                                setTextInput={setTextInput} 
+                                projectEdit={projectEdit}   
                             />
                             )}
                         </>
