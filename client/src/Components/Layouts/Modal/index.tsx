@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 
 // CSS
 import './Modal.css';
@@ -27,8 +27,14 @@ const Modal = ({projectEdit, text, setText, setModal, textInput, setTextInput}: 
     const [status, setStatus] = useState<string>('Aberto');
     const {user}: any = useContext(AuthContext);
 
+    useEffect(() => {
+        setName(projectEdit.name? projectEdit.name : '')
+        setStatus(projectEdit.status? projectEdit.status : '')
+    },[])
+
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
+        console.log(projectEdit)
     }
 
     const handleChengeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {

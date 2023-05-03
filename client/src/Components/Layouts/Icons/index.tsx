@@ -56,9 +56,12 @@ const Icons = ({project, clockIn, setText, setModal, setTextInput, setProjectEdi
         })
     }
 
-    const modalEdit = () => {
+    const modalEdit = async () => {
+        api.defaults.headers.Authorization = `Bearer ${user.token}`;
+
+        const projectEdit =await api.get(`/api/projects/edit/${project.id}`)
         setTextInput('Salvar');
-        setProjectEdit(project);
+        setProjectEdit(projectEdit.data);
         setText('Editar Projeto');
         setModal(true);
     }
