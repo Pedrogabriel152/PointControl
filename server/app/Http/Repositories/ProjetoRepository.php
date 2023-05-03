@@ -54,7 +54,7 @@ class ProjetoRepository {
     }
 
     public static function statusProject(object $project){
-        $project->status = $project->status == "Fechado"? "Aberto" : "Fechado";
+        $project->status = $project->status == "Terminado"? "Aberto" : "Terminado";
 
         $project->save();
     }

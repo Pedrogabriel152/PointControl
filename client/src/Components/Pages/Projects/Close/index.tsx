@@ -7,13 +7,12 @@ import '../Projects.css';
 // Layouts
 import Header from "../../../Layouts/Header";
 import Footer from "../../../Layouts/Footer";
+import Button from "../../../Layouts/Buttom";
+import Modal from "../../../Layouts/Modal";
+import Icons from "../../../Layouts/Icons";
 
 // Icons
 import { FaClipboardList } from 'react-icons/fa';
-import { FiPlus } from 'react-icons/fi';
-import { RiDeleteBin5Fill } from 'react-icons/ri';
-import { GrEdit } from 'react-icons/gr';
-import { BsFillPlayCircleFill, BsPauseCircleFill } from 'react-icons/bs';
 
 // API
 import { api } from "../../../../utils/api";
@@ -29,6 +28,8 @@ const Close = () => {
     const [projects, setProjects] = useState<any>('');
     const {user, loading}: any = useContext(AuthContext);
     const [page, setPage] = useState<any>();
+    const [loadingCheck, setLoadingCheck] = useState<boolean>(true);
+    const [modal, setModal] = useState<boolean>(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,12 +37,16 @@ const Close = () => {
 
         api.get('/api/projects/close')
         .then(res => {
-            setProjects(res.data)
-            setPage(res.data.current_page)
-            console.log(res.data)
+            setProjects(res.data);
+            setPage(res.data.current_page);
+            setLoadingCheck(false);
         })
         .catch(error => {
             setProjects('');
+            if(error.response.status == 401){
+                navigate('/');
+                setLoadingCheck(false);
+            }
         })
     }, []) 
 
@@ -50,12 +55,21 @@ const Close = () => {
 
         api.patch(`/api/projects/clockin/${id}?acao=${acao}`)
         .then(res => {
-            navigate('/projects')
-            toast.success(res.data.message)
+            navigate('/projects');
+            toast.success(res.data.message);
+            setLoadingCheck(false);
         })
         .catch(error => {
-            toast.error(error)
+            toast.error(error);
+            if(error.response.status == 401){
+                navigate('/');
+                setLoadingCheck(false);
+            }
         })
+    }
+
+    if(loadingCheck) {
+        return <div></div>;
     }
 
     if(loading){
@@ -88,17 +102,11 @@ const Close = () => {
                     ? (
                         <div className="dashboard">
                             <span>Nenhum projeto encontrado...</span>
-                            <Link to={'/new'} className="new">
-                                <FiPlus color="#FFF" size={25} />
-                                Novo projeto
-                            </Link>
+                            <Button modal={modal} setModal={setModal}/>
                         </div>
                     ) : (
                         <>
-                            <Link to={'/new'} className="new">
-                                <FiPlus color="#FFF" size={25} />
-                                Novo projeto
-                            </Link>
+                            <Button modal={modal} setModal={setModal}/>
                             <div className="projects">
                                 <Link to={'/projects'}>
                                     Projetos 
@@ -141,12 +149,10 @@ const Close = () => {
                                                 <td data-label="Status">{project.status}</td>
                                                 <td data-label="Custo">{project.custo}</td>
                                                 <td data-label="#">
-                                                    {project.status == "Iniciado" 
-                                                        ? <i onClick={() => clockIn(project.id, 'close')}><BsPauseCircleFill size={20}/></i>
-                                                        : <i onClick={() => clockIn(project.id, 'open')}><BsFillPlayCircleFill size={20}/></i>
-                                                    }
-                                                    <i><GrEdit size={20}/></i>
-                                                    <i><RiDeleteBin5Fill size={20}/></i>
+                                                    <Icons 
+                                                        clockIn={clockIn} 
+                                                        project={project}
+                                                    />
                                                 </td>
                                             </tr>
                                         );
@@ -160,6 +166,10 @@ const Close = () => {
                                     page={page}
                                     setPage={setPage}
                                 />
+                            )}
+
+                            {modal && (
+                                <Modal text="Novo Projeto" modal={modal} setModal={setModal}/>
                             )}
                         </>
                     )

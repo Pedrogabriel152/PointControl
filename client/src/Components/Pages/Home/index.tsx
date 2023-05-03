@@ -17,6 +17,7 @@ import { AuthContext } from "../../../Context/aurh";
 // API
 import { api } from "../../../utils/api";
 import ReactApexChart from "react-apexcharts";
+import { toast } from "react-toastify";
 
 
 const Home = () => {
@@ -24,6 +25,7 @@ const Home = () => {
     const [projectsHours, setProjectsHours] = useState<any>({});
     const [projectsPrice, setProjectsPrice] = useState<any>([]);
     const { user, loading }: any = useContext(AuthContext);
+    const [loadingCheck, setLoadingCheck] = useState<boolean>(true);
     const [series, setSeries] = useState<any>([]);
     const [labels, setLabels] = useState<any>([]);
     const navigate = useNavigate();
@@ -55,9 +57,13 @@ const Home = () => {
             api.get('/api/projects/recent')
             .then(res => {
                 setPorjectsRecents(res.data);
+                setLoadingCheck(false);
             })
             .catch(error => {
                 setPorjectsRecents([]);
+                if(error.response.status == 401){
+                    navigate('/');
+                }
             })
         }
 
@@ -81,9 +87,15 @@ const Home = () => {
 
                 setSeries(series);
                 setLabels(options.labels);
+                setLoadingCheck(false);
             })
             .catch(error => {
                 setProjectsHours([]);
+                if(error.response.status == 401){
+                    navigate('/');
+                    toast.error("Entre com sua conta para acessar o sistema");
+                    setLoadingCheck(false)
+                }
             })
         }
 
@@ -95,10 +107,15 @@ const Home = () => {
 
         api.get('/api/projects/price')
         .then(res => {
-            setProjectsPrice(res.data)
+            setProjectsPrice(res.data);
+            setLoadingCheck(false);
         })
         .catch(error => {
             setProjectsPrice([]);
+            if(error.response.status == 401){
+                navigate('/');
+                setLoadingCheck(false);
+            }
         })
 
     }, [])
@@ -114,6 +131,10 @@ const Home = () => {
 
             </>
         );
+    }
+
+    if(loadingCheck) {
+        return <div></div>
     }
 
     return (
