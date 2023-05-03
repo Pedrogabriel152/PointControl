@@ -20,9 +20,12 @@ import { useNavigate } from "react-router-dom";
 interface Props {
     project: any
     clockIn(id:number, acao: string):void
+    setText(value:string):void
+    setModal(value:boolean):void
+    setTextInput(value: string):void
 }
 
-const Icons = ({project, clockIn}:Props) => {
+const Icons = ({project, clockIn, setText, setModal, setTextInput}:Props) => {
     const {user} : any = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -52,6 +55,12 @@ const Icons = ({project, clockIn}:Props) => {
         })
     }
 
+    const modalEdit = () => {
+        setTextInput('Salvar');
+        setText('Editar Projeto');
+        setModal(true);
+    }
+
     return (
         <>
             {project.status == "Terminado"
@@ -64,7 +73,7 @@ const Icons = ({project, clockIn}:Props) => {
                 : <i onClick={() => clockIn(project.id, 'open')}><BsFillPlayCircleFill size={20}/></i>
                 
             )}
-            <i><GrEdit size={20}/></i>
+            <i onClick={modalEdit}><GrEdit size={20}/></i>
             <i onClick={deleteProject}><RiDeleteBin5Fill size={20}/></i>
         </>
     );

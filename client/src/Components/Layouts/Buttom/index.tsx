@@ -5,11 +5,14 @@ import { Link } from "react-router-dom";
 interface Props {
     modal: boolean
     setModal(value: boolean):void
+    setTextInput(value:string):void
+    setText(value:string):void
 }
 
-const Button = ({modal, setModal}: Props) => {
+const Button = ({modal, setModal, setTextInput, setText}: Props) => {
     const toogleModal = () => {
-
+        setText('Novo Projeto');
+        setTextInput('Cadastrar');
         setModal(true);
         return;
     }

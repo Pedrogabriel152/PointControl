@@ -34,6 +34,7 @@ const Header = () => {
             <ul>
                 <li><Link to={'/home'}>Home</Link></li>
                 <li><Link to={'/projects'}>Projetos</Link></li>
+                <li><Link to={'/profile'}>Perfil</Link></li>
                 <li onClick={sair}><Link to={'/'}>Sair</Link></li>
             </ul>
         </header>

@@ -17,10 +17,12 @@ interface Props {
     project?: any
     text: string
     setModal(value: boolean):void
-    modal: boolean
+    setText(value:string):void
+    textInput: string
+    setTextInput(value:string):void
 }
 
-const Modal = ({project, text, modal, setModal}: Props) => {
+const Modal = ({project, text, setText, setModal, textInput, setTextInput}: Props) => {
     const [name, setName] = useState<string>('');
     const [status, setStatus] = useState<string>('Aberto');
     const {user}: any = useContext(AuthContext);
@@ -49,8 +51,11 @@ const Modal = ({project, text, modal, setModal}: Props) => {
             .then(res => {
                 setModal(false);
                 toast.success('Projeto criado com sucesso')
+                setText('Novo Projeto');
             })
             .catch(error => toast.error('Erro ao criar projeto'))
+
+            setText('Novo Projeto');
 
             return;
         }
@@ -62,8 +67,10 @@ const Modal = ({project, text, modal, setModal}: Props) => {
         .then(res => {
             setModal(false);
             toast.success('Projeto criado com sucesso')
+            setText('Novo Projeto');
         })
         .catch(error => toast.error('Erro ao criar projeto'))
+        setText('Novo Projeto');
     }
 
 
@@ -94,7 +101,7 @@ const Modal = ({project, text, modal, setModal}: Props) => {
                         <option value="Terminado">Terminado</option>
                     </select>
 
-                    <input type="submit" value="Cadastrar" />
+                    <input type="submit" value={textInput} />
                 </form>
             </div>
         </div>

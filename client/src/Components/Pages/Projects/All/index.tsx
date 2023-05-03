@@ -13,10 +13,6 @@ import Icons from "../../../Layouts/Icons";
 
 // Icons
 import { FaClipboardList } from 'react-icons/fa';
-import { RiDeleteBin5Fill } from 'react-icons/ri';
-import { GrEdit } from 'react-icons/gr';
-import { BsFillPlayCircleFill, BsPauseCircleFill } from 'react-icons/bs';
-import { GiConfirmed } from 'react-icons/gi';
 
 // API
 import { api } from "../../../../utils/api";
@@ -34,6 +30,8 @@ const All = () => {
     const [page, setPage] = useState<any>();
     const [loadingCheck, setLoadingCheck] = useState<boolean>(true);
     const [modal, setModal] = useState<boolean>(false);
+    const [text, setText] = useState<string>('Novo Projeto');
+    const [textInput, setTextInput] = useState<string>('Cadastrar');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -106,11 +104,21 @@ const All = () => {
                     ? (
                         <div className="dashboard">
                             <span>Nenhum projeto encontrado...</span>
-                            <Button modal={modal} setModal={setModal}/>
+                            <Button 
+                                modal={modal} 
+                                setModal={setModal} 
+                                setTextInput={setTextInput} 
+                                setText={setText}
+                            />
                         </div>
                     ) : (
                         <>
-                            <Button modal={modal} setModal={setModal}/>
+                            <Button 
+                                modal={modal} 
+                                setModal={setModal} 
+                                setTextInput={setTextInput} 
+                                setText={setText}
+                            />
                             <div className="projects">
                                 <Link to={'/projects'} className="active">
                                     Projetos 
@@ -156,6 +164,9 @@ const All = () => {
                                                     <Icons 
                                                         clockIn={clockIn} 
                                                         project={project}
+                                                        setModal={setModal}
+                                                        setText={setText}
+                                                        setTextInput={setTextInput}
                                                     />
                                                 </td>
                                             </tr>
@@ -173,7 +184,13 @@ const All = () => {
                             )}
 
                             {modal && (
-                                <Modal text="Novo Projeto" modal={modal} setModal={setModal}/>
+                                <Modal 
+                                text={text} 
+                                setText={setText} 
+                                setModal={setModal} 
+                                textInput={textInput}
+                                setTextInput={setTextInput}    
+                            />
                             )}
                         </>
                     )

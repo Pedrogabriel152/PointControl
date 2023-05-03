@@ -30,6 +30,8 @@ const Open = () => {
     const [page, setPage] = useState<any>();
     const [loadingCheck, setLoadingCheck] = useState<boolean>(true);
     const [modal, setModal] = useState<boolean>(false);
+    const [text, setText] = useState<string>('Novo Projeto');
+    const [textInput, setTextInput] = useState<string>('Cadastrar');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -102,11 +104,21 @@ const Open = () => {
                     ? (
                         <div className="dashboard">
                             <span>Nenhum projeto encontrado...</span>
-                            <Button modal={modal} setModal={setModal}/>
+                            <Button 
+                                modal={modal} 
+                                setModal={setModal} 
+                                setTextInput={setTextInput} 
+                                setText={setText}
+                            />
                         </div>
                     ) : (
                         <>
-                            <Button modal={modal} setModal={setModal}/>
+                            <Button 
+                                modal={modal} 
+                                setModal={setModal} 
+                                setTextInput={setTextInput} 
+                                setText={setText}
+                            />
                             <div className="projects">
                                 <Link to={'/projects'}>
                                     Projetos 
@@ -152,6 +164,9 @@ const Open = () => {
                                                     <Icons 
                                                         clockIn={clockIn} 
                                                         project={project}
+                                                        setModal={setModal}
+                                                        setText={setText}
+                                                        setTextInput={setTextInput}
                                                     />
                                                 </td>
                                             </tr>
@@ -168,7 +183,13 @@ const Open = () => {
                                 />
                             )}
                             {modal && (
-                                <Modal text="Novo Projeto" modal={modal} setModal={setModal}/>
+                                <Modal 
+                                    text="Novo Projeto" 
+                                    setText={setText} 
+                                    setModal={setModal}
+                                    textInput={textInput}
+                                    setTextInput={setTextInput}
+                                />
                             )}
                             
                         </>
