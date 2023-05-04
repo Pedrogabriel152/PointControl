@@ -52,7 +52,7 @@ const Home = () => {
 
     useEffect(() => {
         api.defaults.headers.Authorization = `Bearer ${user.token}`;
-
+        
         const getProjects = () => {
             api.get('/api/projects/recent')
             .then(res => {

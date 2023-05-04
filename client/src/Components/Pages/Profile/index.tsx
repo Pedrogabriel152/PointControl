@@ -123,6 +123,7 @@ const Profile = () => {
                             name="valor_hora" 
                             placeholder="Seu e-mail" 
                             value={userUpdate.valor_hora? userUpdate.valor_hora : ''}
+                            onChange={handleOnChange}
                         />
 
                         <label htmlFor="email">E-mail:</label>

@@ -18,10 +18,24 @@ const AuthProvider = ({children}: any) => {
             setLoading(false);
             return
         }
+        console.log('auth')
 
         setUser(JSON.parse(storageUser));
         setLoading(false);
     }, []);
+
+    const getUser = () => {
+        const storageUser = localStorage.getItem('@user');
+
+        if(!storageUser){
+            setLoading(false);
+            return
+        }
+        console.log('auth')
+
+        setUser(JSON.parse(storageUser));
+        setLoading(false);
+    }
 
     const storageUser = (data: any) => {
         localStorage.setItem('@user', JSON.stringify(data));
@@ -38,7 +52,8 @@ const AuthProvider = ({children}: any) => {
             value={{ 
                 user,
                 loading,
-                logout
+                logout,
+                getUser
             }}
         >
             {children}
