@@ -70,28 +70,58 @@ class ProjetoRepository {
         });
     }
 
-    public static function getAllProjects(int $id_user){
+    public static function getAllProjects(int $id_user, $valorHora){
         $projects = Projeto::where([
             ['id_user', '=', $id_user]
         ])->orderBy('created_at', 'desc')->paginate(10);
 
+        foreach ($projects as $key => $value) {
+            $data = [];
+            $data[] = $value;
+            $projectHours = ProjectoServices::sumHoursProject($data);   
+            $value->horas_gastas = $projectHours;
+            $horasTotal = explode(':', $value->horas_gastas);
+            $projectUpdate = ProjectoServices::calcularCusto($value, $valorHora, $horasTotal);
+            $projectUpdate->save();
+        }
+
         return $projects;
     }
 
-    public static function getAllProjectsClose(int $id_user){
+    public static function getAllProjectsClose(int $id_user, $valorHora){
         $projects = Projeto::where([
             ['id_user', '=', $id_user],
             ['status', '=', 'Terminado']
         ])->orderBy('created_at', 'desc')->paginate(10);
 
+        foreach ($projects as $key => $value) {
+            $data = [];
+            $data[] = $value;
+            $projectHours = ProjectoServices::sumHoursProject($data);   
+            $value->horas_gastas = $projectHours;
+            $horasTotal = explode(':', $value->horas_gastas);
+            $projectUpdate = ProjectoServices::calcularCusto($value, $valorHora, $horasTotal);
+            $projectUpdate->save();
+        }
+
         return $projects;
     }
 
-    public static function getAllProjectsOpen(int $id_user){
+    public static function getAllProjectsOpen(int $id_user, $valorHora){
         $projects = Projeto::where([
             ['id_user', '=', $id_user],
             ['status', '!=', 'Terminado']
         ])->orderBy('created_at', 'desc')->paginate(10);
+
+        foreach ($projects as $key => $value) {
+            $data = [];
+            $data[] = $value;
+            $projectHours = ProjectoServices::sumHoursProject($data);   
+            $value->horas_gastas = $projectHours;
+            $horasTotal = explode(':', $value->horas_gastas);
+            $projectUpdate = ProjectoServices::calcularCusto($value, $valorHora, $horasTotal);
+            $projectUpdate->save();
+        }
 
         return $projects;
     }
@@ -139,7 +169,7 @@ class ProjetoRepository {
     }
 
     public static function getHoursProjects(int $id){
-        $projects = DB::select("SELECT name, id, horas_gastas FROM projetos WHERE id_user = $id LIMIT 5");
+        $projects = DB::select("SELECT name, id, horas_gastas FROM projetos WHERE id_user = $id ORDER BY horas_gastas DESC LIMIT 5");
 
         $projectsOrden = ProjectoServices::ordenaProjectsHours($projects);
 

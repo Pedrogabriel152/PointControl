@@ -75,11 +75,38 @@ class ProjectoServices
         }
 
         if($minuts == 60) {
-            $minuts = 0;
+            $minutsRestantes = $minuts - 60;
+            $minuts = $minutsRestantes;
             $hours += 1;
         }
 
         return $hours;
+    }
+
+    public static function sumHoursProject(array $time) {
+
+        $minuts = 0;
+        $hours = 0;
+
+        foreach ($time as $key => $value) {
+
+            if($value->horas_gastas){
+                $hoursArray = explode(':', $value->horas_gastas);
+                $minuts += intval($hoursArray[1]);
+                $hours += intval($hoursArray[0]);
+            }
+            
+        }
+
+        if($minuts >= 60) {
+            $minutsRestantes = $minuts - 60;
+            $minuts = $minutsRestantes;
+            $hours += 1;
+        }
+
+        $hourFormat = "$hours:$minuts";
+
+        return $hourFormat;
     }
 
     public static function mediaHours(array $time) {

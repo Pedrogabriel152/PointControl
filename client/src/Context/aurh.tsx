@@ -31,8 +31,7 @@ const AuthProvider = ({children}: any) => {
             setLoading(false);
             return
         }
-        console.log('auth')
-
+        
         setUser(JSON.parse(storageUser));
         setLoading(false);
     }

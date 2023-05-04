@@ -110,7 +110,7 @@ class ProjetoController extends Controller
     // Recupera todos os projetos 
     public function getAll(Request $request) {
         $user = $request->user();
-        $projects = ProjetoRepository::getAllProjects($user->id);
+        $projects = ProjetoRepository::getAllProjects($user->id, $user->valor_hora);
 
         return response()->json($projects, 200);
     }
@@ -118,7 +118,7 @@ class ProjetoController extends Controller
     // Recupera todos os projetos Fechados
     public function getAllClose(Request $request) {
         $user = $request->user();
-        $projects = ProjetoRepository::getAllProjectsClose($user->id);
+        $projects = ProjetoRepository::getAllProjectsClose($user->id, $user->valor_hora);
 
         return response()->json($projects);
     }
@@ -126,7 +126,7 @@ class ProjetoController extends Controller
     // Recupera todos os projetos Abertos
     public function getAllOpen(Request $request) {
         $user = $request->user();
-        $projects = ProjetoRepository::getAllProjectsOpen($user->id);
+        $projects = ProjetoRepository::getAllProjectsOpen($user->id, $user->valor_hora);
 
         return response()->json($projects);
     }

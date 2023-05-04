@@ -46,8 +46,13 @@ const Login = () => {
                 email: user.email,
                 password: user.password
             })
-            .then((res: any) => {
-                localStorage.setItem('@user', JSON.stringify(res.data));
+            .then(async (res: any) => {
+                try{
+                    console.log(res.data)
+                    localStorage.setItem('@user', JSON.stringify(res.data));
+                }catch(error: any){
+                    console.log(error);
+                }
                 navigate('/home');
             })
             .catch((error: any) => {

@@ -151,6 +151,7 @@ const All = () => {
                                             const name = project.name[0].toUpperCase()+project.name.substr(1);
 
                                             const horas = project.horas_gastas.split(':')
+                                            
 
                                             return (
                                                 <tr key={project.id}>
