@@ -131,51 +131,53 @@ const All = () => {
                                     Projetos Fechados
                                 </Link>
                             </div>
-                            <table className="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Projeto</th>
-                                        <th scope="col">Horas Gastas</th>
-                                        <th scope="col">Criação</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Custo</th>
-                                        <th scope="col">#</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {projects.data.map((project: any) => {
-                                        const date = new Date(project.created_at)
-                                        const data = `${date.getDate().toString().padStart(2,'0')}/${String(date.getMonth() + 1).padStart(2,'0')}/${date.getFullYear()}`
+                            <div className="content">
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Projeto</th>
+                                            <th scope="col">Horas Gastas</th>
+                                            <th scope="col">Criação</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Custo</th>
+                                            <th scope="col">#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {projects.data.map((project: any) => {
+                                            const date = new Date(project.created_at)
+                                            const data = `${date.getDate().toString().padStart(2,'0')}/${String(date.getMonth() + 1).padStart(2,'0')}/${date.getFullYear()}`
 
-                                        const name = project.name[0].toUpperCase()+project.name.substr(1);
+                                            const name = project.name[0].toUpperCase()+project.name.substr(1);
 
-                                        const horas = project.horas_gastas.split(':')
+                                            const horas = project.horas_gastas.split(':')
 
-                                        return (
-                                            <tr key={project.id}>
-                                                <td data-label="Projeto">{name}</td>
-                                                <td data-label="Horas Gastas">{horas.length === 2
-                                                    ? horas[1].length == 1 ? `${horas[0]}:0${horas[1]}`:`${horas[0]}:${horas[1]}`
-                                                    : `${project.horas_gastas}`
-                                                }</td>
-                                                <td data-label="Criação">{data}</td>
-                                                <td data-label="Status">{project.status}</td>
-                                                <td data-label="Custo">{project.custo}</td>
-                                                <td data-label="#">
-                                                    <Icons 
-                                                        clockIn={clockIn} 
-                                                        project={project}
-                                                        setModal={setModal}
-                                                        setText={setText}
-                                                        setTextInput={setTextInput}
-                                                        setProjectEdit={setProjectEdit}
-                                                    />
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}     
-                                </tbody>
-                            </table>
+                                            return (
+                                                <tr key={project.id}>
+                                                    <td data-label="Projeto">{name}</td>
+                                                    <td data-label="Horas Gastas">{horas.length === 2
+                                                        ? horas[1].length == 1 ? `${horas[0]}:0${horas[1]}`:`${horas[0]}:${horas[1]}`
+                                                        : `${project.horas_gastas}`
+                                                    }</td>
+                                                    <td data-label="Criação">{data}</td>
+                                                    <td data-label="Status">{project.status}</td>
+                                                    <td data-label="Custo">{project.custo}</td>
+                                                    <td data-label="#">
+                                                        <Icons 
+                                                            clockIn={clockIn} 
+                                                            project={project}
+                                                            setModal={setModal}
+                                                            setText={setText}
+                                                            setTextInput={setTextInput}
+                                                            setProjectEdit={setProjectEdit}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}     
+                                    </tbody>
+                                </table>
+                            </div>
                             {projects.last_page && (
                                 <Paginate 
                                     last_page={projects.last_page}

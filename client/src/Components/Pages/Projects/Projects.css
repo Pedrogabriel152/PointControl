@@ -82,6 +82,10 @@
     font-weight: 600;
 }
 
+.content{
+    height: 52vh;
+}
+
 .table {
     border: 1px solid #CCC;
     margin: 0;
@@ -90,8 +94,7 @@
     table-layout: fixed;
     border-collapse: collapse;
     margin-bottom: 1em;
-    height: 52vh;
-    margin-top: 3em;
+    margin-top: 1em;
 }
 
 table caption {

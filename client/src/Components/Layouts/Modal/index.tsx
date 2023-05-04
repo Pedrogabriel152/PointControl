@@ -28,13 +28,13 @@ const Modal = ({projectEdit, text, setText, setModal, textInput, setTextInput}: 
     const {user}: any = useContext(AuthContext);
 
     useEffect(() => {
-        setName(projectEdit.name? projectEdit.name : '')
-        setStatus(projectEdit.status? projectEdit.status : '')
-    },[])
+        setName(projectEdit.name? projectEdit.name : '');
+        setStatus(projectEdit.status? projectEdit.status : '');
+    },[]);
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
-        console.log(projectEdit)
+        console.log(projectEdit);
     }
 
     const handleChengeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -52,14 +52,14 @@ const Modal = ({projectEdit, text, setText, setModal, textInput, setTextInput}: 
         if(text == "Novo Projeto") {
             api.post('/api/projects/new', {
                 name: name,
-                status: status
+                status: status? status : 'Aberto'
             })
             .then(res => {
                 setModal(false);
-                toast.success('Projeto criado com sucesso')
+                toast.success('Projeto criado com sucesso');
                 setText('Novo Projeto');
             })
-            .catch(error => toast.error('Erro ao criar projeto'))
+            .catch(error => toast.error('Erro ao criar projeto'));
 
             setText('Novo Projeto');
 
@@ -72,10 +72,10 @@ const Modal = ({projectEdit, text, setText, setModal, textInput, setTextInput}: 
         })
         .then(res => {
             setModal(false);
-            toast.success('Projeto editado com sucesso')
+            toast.success('Projeto editado com sucesso');
             setText('Novo Projeto');
         })
-        .catch(error => toast.error(error.response.data.message))
+        .catch(error => toast.error(error.response.data.message));
     }
 
 

@@ -38,6 +38,7 @@ const Login = () => {
 
     const handleSubmit = async (e: ChangeEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
+        localStorage.removeItem('@user');
         api.get('/sanctum/csrf-cookie').then(response => {
             api.post('/api/login', {
                 email: user.email,

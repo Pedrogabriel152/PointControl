@@ -90,7 +90,7 @@ class ProjetoRepository {
     public static function getAllProjectsOpen(int $id_user){
         $projects = Projeto::where([
             ['id_user', '=', $id_user],
-            ['status', '=', 'Aberto']
+            ['status', '!=', 'Terminado']
         ])->orderBy('created_at', 'desc')->paginate(10);
 
         return $projects;
