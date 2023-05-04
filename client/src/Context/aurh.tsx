@@ -24,7 +24,7 @@ const AuthProvider = ({children}: any) => {
     }, []);
 
     const storageUser = (data: any) => {
-        localStorage.setItem('@ticketsPRO', JSON.stringify(data));
+        localStorage.setItem('@user', JSON.stringify(data));
     }
 
     const logout = async () => {

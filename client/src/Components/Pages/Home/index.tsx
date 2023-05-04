@@ -185,14 +185,20 @@ const Home = () => {
                 <div className="rowBottom">
                     <h3>Horas Por Projeto</h3>
 
-                    <div className="grafico">
-                        <ReactApexChart 
-                            options={options} 
-                            series={series} 
-                            type="donut" width={380} 
-                        />
+                    {projectsHours
+                        ? (
+                            <div className="grafico">
+                                <ReactApexChart 
+                                    options={options} 
+                                    series={series} 
+                                    type="donut" width={380} 
+                                />
 
-                    </div>
+                            </div>
+                        )
+                        : 'Ainda sem registros'
+                    }
+
                 </div>
 
                 <div className="rowBottom price">

@@ -1,0 +1,56 @@
+.form-profile {
+    display: flex;
+    flex-direction: column;
+    background-color: #F8F8F8;
+    padding: 2.5em;
+    position: absolute;
+    width: 40vw;
+    height: 40vh;
+    border-radius: 15px;
+    top: 25%;
+}
+
+.form-profile .label-avatar .image{
+    position: absolute;
+    top: 6%;
+    left: 40%;
+}
+
+.form-profile .label-avatar img{
+    height: 25%;
+    width: 25%;
+    position: absolute;
+    top: 2%;
+    left: 35%;
+    background-size: cover;
+    border-radius: 50%;
+}
+
+.form-profile label{
+    font-size: 1.2em;
+    margin-left: 2em;
+    margin-bottom: .3em;
+    color: #000;
+    font-weight: 500;
+}
+
+.first{
+    margin-top: 8em;
+}
+
+.form-profile input{
+    width: 80%;
+    margin-left: 3em;
+    padding: .4em 0;
+    margin-bottom: 1em;
+}
+
+.form-profile input[type="submit"]{
+    background-color: #12CDD4;
+    padding: 10px 8px;
+    width: 30%;
+    margin-left: 14em;
+    border-radius: 15px;
+    border: none;
+    color: #FFF;
+}
